@@ -4,7 +4,7 @@
 
 ## 🎥 Demo
 
-[![Watch the demo](https://cdn.loom.com/sessions/thumbnails/4b37a1190d5940f78c6fa68215a0fcc9-with-play.gif)](https://www.loom.com/share/4b37a1190d5940f78c6fa68215a0fcc9)
+[![Watch the demo](https://cdn.loom.com/sessions/thumbnails/4b37a1190d5940f78c6fa68215a0fcc9-with-play.gif)](https://www.loom.com/share/5c2e013d1fa143bfa18e7be2bc6e3698)
 
 > [▶ Watch full demo on Loom](https://www.loom.com/share/4b37a1190d5940f78c6fa68215a0fcc9)
 
