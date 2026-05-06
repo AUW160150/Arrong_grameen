@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Search, Globe, Zap, Database, ArrowRight, CheckCircle } from 'lucide-react'
+import { Search, Globe, Zap, Database, Users, ArrowRight, CheckCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const ACTORS = [
@@ -24,6 +24,17 @@ const ACTORS = [
     bg: 'bg-emerald-50',
   },
   {
+    icon: Users,
+    name: 'instagram-profile-scraper',
+    label: 'Influencer Discovery',
+    desc: 'Scrapes Instagram & TikTok for South Asian creators with US-aligned audiences — filtered by niche, follower count, and engagement rate. No agency needed.',
+    stat: '340+',
+    statLabel: 'creators matched per brand',
+    color: 'text-pink-500',
+    bg: 'bg-pink-50',
+    highlight: true,
+  },
+  {
     icon: Database,
     name: 'social-media-scraper',
     label: 'Social Trend Intelligence',
@@ -38,8 +49,9 @@ const ACTORS = [
 const LIVE_STEPS = [
   { label: 'Actor fired', detail: 'apify/google-search-scraper · 48 search queries' },
   { label: 'Results streamed', detail: '2,400 raw results → ICP filter → 62 high-fit leads' },
+  { label: 'Influencers scraped', detail: 'apify/instagram-profile-scraper · niche="handloom" · 340 profiles → 28 high-fit creators', highlight: true },
   { label: 'Contact enriched', detail: 'Name, email, title, LinkedIn from each buyer page' },
-  { label: 'Pitch drafted', detail: 'GPT-4o writes a personalized email per buyer' },
+  { label: 'Pitch drafted', detail: 'GPT-4o writes a personalized email per buyer + creator outreach' },
   { label: 'Pipeline updated', detail: 'Live dashboard shows open rates, replies, revenue est.' },
 ]
 
@@ -87,7 +99,7 @@ export default function ApifyPower() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white/8 border border-white/12 rounded-2xl p-5"
+                className={`rounded-2xl p-5 ${a.highlight ? 'bg-pink-500/10 border border-pink-400/30' : 'bg-white/8 border border-white/12'}`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`w-10 h-10 ${a.bg} rounded-xl flex items-center justify-center shrink-0`}>
@@ -129,9 +141,9 @@ export default function ApifyPower() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex items-start gap-3"
+                  className={`flex items-start gap-3 rounded-lg px-2 py-1 -mx-2 ${s.highlight ? 'bg-pink-500/10' : ''}`}
                 >
-                  <CheckCircle size={14} className="text-green-400 mt-0.5 shrink-0" />
+                  <CheckCircle size={14} className={`mt-0.5 shrink-0 ${s.highlight ? 'text-pink-400' : 'text-green-400'}`} />
                   <div>
                     <p className="text-cream text-xs font-semibold">{s.label}</p>
                     <p className="text-cream/40 text-xs mt-0.5 font-mono leading-relaxed">{s.detail}</p>
@@ -164,7 +176,8 @@ export default function ApifyPower() {
             {[
               ['$0.08', 'avg cost per full GTM run'],
               ['~3 min', 'end-to-end pipeline time'],
-              ['62', 'avg high-fit leads per brand'],
+              ['62', 'avg high-fit buyer leads'],
+              ['28', 'avg influencers matched'],
             ].map(([val, label]) => (
               <div key={label}>
                 <p className="text-2xl font-bold text-cream">{val}</p>

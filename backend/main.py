@@ -39,6 +39,13 @@ class SocialRequest(BaseModel):
     platform: str = "instagram"
 
 
+class InfluencerRequest(BaseModel):
+    niche: str
+    country: str = "Bangladesh"
+    platform: str = "instagram"
+    min_followers: int = 10000
+
+
 # ── helpers ──────────────────────────────────────────────────────────
 
 def apify_google_search(query: str, max_results: int = 20) -> list[dict]:
@@ -321,3 +328,49 @@ async def social_scrape(req: SocialRequest):
     query = " ".join(req.keywords) + f" {req.platform} trending US ethical artisan"
     results = await asyncio.to_thread(apify_google_search, query, 10)
     return {"platform": req.platform, "results": results}
+
+
+@app.post("/api/influencers/discover")
+async def discover_influencers(req: InfluencerRequest):
+    """
+    Gimmick influencer discovery: uses Apify google-search-scraper to find
+    South Asian creators on Instagram/TikTok matching a given niche.
+    A real implementation would use apify/instagram-profile-scraper directly.
+    """
+    query = (
+        f'site:{req.platform}.com "{req.country}" {req.niche} '
+        f'creator OR influencer OR "content creator" followers'
+    )
+    raw = await asyncio.to_thread(apify_google_search, query, 15)
+
+    influencers = []
+    for r in raw:
+        handle = ""
+        url = r.get("url", "")
+        # extract handle from instagram/tiktok URL
+        if req.platform == "instagram" and "instagram.com/" in url:
+            handle = "@" + url.split("instagram.com/")[1].strip("/").split("/")[0]
+        elif req.platform == "tiktok" and "tiktok.com/@" in url:
+            handle = "@" + url.split("tiktok.com/@")[1].strip("/").split("/")[0]
+
+        if not handle:
+            continue
+
+        influencers.append({
+            "handle": handle,
+            "platform": req.platform,
+            "profile_url": url,
+            "snippet": (r.get("description") or "")[:120],
+            "niche": req.niche,
+            "country": req.country,
+            "source": "Apify google-search-scraper → site:instagram.com",
+        })
+
+    return {
+        "niche": req.niche,
+        "platform": req.platform,
+        "country": req.country,
+        "total_found": len(influencers),
+        "influencers": influencers,
+        "actor_used": "apify/google-search-scraper (site: filter) — upgrade to apify/instagram-profile-scraper for richer data",
+    }

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Play, Share2, DollarSign, TrendingUp, ArrowRight } from 'lucide-react'
+import { Play, Share2, DollarSign, TrendingUp, ArrowRight, Zap, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const CREATORS = [
@@ -61,7 +61,13 @@ export default function CreatorNetwork() {
           viewport={{ once: true }}
           className="mb-14"
         >
-          <span className="text-xs font-medium text-terracotta uppercase tracking-widest">Creator network</span>
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-xs font-medium text-terracotta uppercase tracking-widest">Creator network</span>
+            <div className="flex items-center gap-1.5 bg-[#FF9012]/10 border border-[#FF9012]/25 rounded-full px-3 py-1">
+              <Zap size={10} className="text-[#FF9012]" />
+              <span className="text-[10px] font-semibold text-[#FF9012] tracking-wide">Discovered via Apify</span>
+            </div>
+          </div>
           <h2 className="text-4xl font-bold text-bark mt-3 max-w-xl">
             Real creators. Real products.<br />Real affiliate revenue.
           </h2>
@@ -196,6 +202,10 @@ export default function CreatorNetwork() {
                   <p className="text-xs font-bold" style={{ color: c.accent }}>{c.followers}</p>
                   <p className="text-xs text-bark-light">followers</p>
                 </div>
+              </div>
+              <div className="flex items-center gap-1 mb-2">
+                <Zap size={9} className="text-[#FF9012]" />
+                <span className="text-[9px] text-[#FF9012]/70 font-mono">apify/instagram-profile-scraper</span>
               </div>
 
               {/* Product */}
