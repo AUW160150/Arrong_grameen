@@ -50,8 +50,19 @@ Grameen is a B2B GTM platform that helps premium South Asian and African brands 
 
 ### AI / Agents
 - **OpenAI Whisper** — voice transcription in any language (brand onboarding flow)
-- **Apify actors** — web intelligence: buyer scraping, social trend analysis, pricing benchmarks
+- **Apify actors** — web intelligence: buyer scraping, influencer discovery, social trend analysis (see below)
 - **GPT-4o** — GTM brief generation, pitch drafting, reel scripts
+
+---
+
+## Apify actors used
+
+| Actor | Purpose | Where used |
+|---|---|---|
+| [`apify/google-search-scraper`](https://apify.com/apify/google-search-scraper) | US buyer discovery — scans 2,400+ ethical retailers, specialty stores, and Amazon sellers matching the brand's category | Backend pipeline (`/api/pipeline/run`), contact enrichment fallback, social trend queries |
+| [`apify/website-content-crawler`](https://apify.com/apify/website-content-crawler) | Brand website ingestion — crawls a brand's URL and extracts product/mission copy to auto-build the GTM brief | Backend (`/api/brand/from-url`) |
+| [`apify/instagram-profile-scraper`](https://apify.com/apify/instagram-profile-scraper) | Influencer discovery — finds South Asian creators on Instagram with US-aligned audiences, filtered by niche and follower count | Frontend (`ApifyPower` section, `CreatorNetwork` section), backend (`/api/influencers/discover`) |
+| [`apify/social-media-scraper`](https://apify.com/apify/social-media-scraper) | Social trend intelligence — scrapes trending US hashtags (#slowfashion, #artisanmade), competitor reel performance, and optimal posting windows | Frontend (`ApifyPower` section), backend (`/api/social/scrape`) |
 
 ---
 
@@ -157,6 +168,10 @@ POST /api/pipeline/run              — start a GTM pipeline run
 GET  /api/pipeline/status/{job_id}  — poll run status
 GET  /api/pipeline/results/{job_id} — fetch scraped leads + GTM report
 POST /api/social/scrape             — social trend intelligence scrape
+POST /api/influencers/discover      — find South Asian creators by niche via Apify
+GET  /api/brand/enrich-contacts     — Apollo.io contact enrichment (Apify fallback)
+POST /api/brand/from-url            — scrape brand website via Apify
+POST /api/brand/from-doc            — parse uploaded PDF/DOCX brand brief
 ```
 
 ---
